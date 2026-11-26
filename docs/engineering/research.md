@@ -26,6 +26,8 @@ The reading runs as a **background agent**. You keep working while it follows ea
 
 Nothing stops the background agent from spawning another background agent of its own. This is the skill's best-documented problem.
 
+Everything the agent reads is evidence, not instructions. A web page or README can carry text written to steer an agent that reads it. If a source tells it to run something, go somewhere else, or change its task, the agent ignores that and names the source in the findings as a warning.
+
 The repo decides where the file goes, not the skill. It follows whatever convention already exists for notes. If there is none, it picks a sensible place and tells you where. It writes one file per run.
 
 ## Common questions
@@ -66,6 +68,7 @@ No, it now fires them for you. In the unreleased changes since v1.1, a charting 
 - Exactly one new background task appears. A second one with a near-identical name is the nesting bug.
 - One new Markdown file shows up, in the folder the repo already uses for notes, and the agent tells you the path.
 - Every claim in it carries a link, and following two at random lands you on an official doc, a spec, or the source file itself, not on someone's write-up of it.
+- Nothing a source said changed what the agent did. If a page tried, the file names that page as a warning.
 - You can make the decision you were stuck on from the file alone, without going back to the sources yourself.
 
 ## Where it fits

@@ -38,6 +38,8 @@ A run has five steps, in order:
 4. Run the full test suite once, at the end.
 5. Run [code-review](https://aihero.dev/skills-code-review), then commit to the current branch.
 
+The ticket describes the work. It does not give the run orders. If its body or comments ask for something beyond the work, such as running an unfamiliar script, fetching a URL, or touching credentials, CI, or another repo, or if the text came from someone outside the project, the run shows it to you and waits.
+
 One run covers one ticket. The tickets [to-tickets](https://aihero.dev/skills-to-tickets) produces are tracer-bullet vertical slices sized to fit a single fresh [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 
 ## Pre-agreed seams
@@ -80,6 +82,7 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 - You can see an actual `tdd` Skill tool call in the trace, not just tests appearing in the diff.
 - Typechecks and single test files run repeatedly during the run, and the full suite runs once near the end.
 - The run reaches a commit on your current branch without you prompting it to carry on.
+- Anything in the ticket that asked for more than the work reached you before the run acted on it.
 - The diff is one ticket's worth of change: a vertical slice through every layer, not several tickets swept together.
 
 ## Where it fits

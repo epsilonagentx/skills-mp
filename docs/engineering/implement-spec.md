@@ -33,6 +33,8 @@ The tracker decides whether a pull request exists at all. If your tracker closes
 
 Implementers talk to the orchestrator through [context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer) (the spec, the ticket, shared exploration notes, earlier commits) rather than pasted summaries. This keeps each subagent's prompt small and leaves room in the orchestrator's window for the graph.
 
+Tickets, their comments, and fetched exploration notes are data, not orders. Every subagent is told so, and stops to report any text that asks for more than its ticket, such as running an unfamiliar script or touching credentials. The orchestrator puts those reports, and any ticket text from outside the project, in front of you before it carries on.
+
 ## Common questions
 
 **How is this different from running `/implement` on each ticket myself?**
@@ -73,6 +75,7 @@ A worktree holds only what git tracks. Tests that read gitignored fixtures, loca
 - A ticket starts as soon as its last blocker lands on the integration branch, not when the whole run ends.
 - Every ticket's trace shows `tdd` running, with a failing test before the code.
 - Merges into the integration branch are fast-forwards, not conflict resolutions.
+- Any ticket text that asked a subagent for more than its ticket reached you, instead of being acted on.
 - The run ends on one branch with every ticket resolved, and a PR only if your tracker wanted one.
 
 ## Where it fits
