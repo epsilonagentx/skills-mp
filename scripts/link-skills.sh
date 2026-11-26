@@ -14,6 +14,8 @@ set -euo pipefail
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills")
+REPO_REAL="$(cd "$REPO" && pwd -P)"
+skipped=0
 
 # Collect the repo's skills once, link into every destination. `deprecated/`
 # is retired, and `misc/` is kept around but rarely used and not promoted (see
@@ -52,11 +54,31 @@ for DEST in "${DESTS[@]}"; do
     src="${srcs[$i]}"
     target="$DEST/$name"
 
-    if [ -e "$target" ] && [ ! -L "$target" ]; then
-      rm -rf "$target"
+    # Never delete anything here: a real directory or file at $target may be a
+    # skill installed by hand or from somewhere else. Only a symlink that points
+    # into this repo, or at nothing, is replaced; everything else is skipped.
+    if [ -L "$target" ]; then
+      if [ -e "$target" ]; then
+        case "$(readlink -f "$target")" in
+          "$REPO_REAL"/*) ;;
+          *)
+            echo "skipped $name: $target links to $(readlink "$target"), outside this repo. Remove that link yourself to link this skill." >&2
+            skipped=$((skipped + 1))
+            continue
+            ;;
+        esac
+      fi
+    elif [ -e "$target" ]; then
+      echo "skipped $name: $target already exists and is not a symlink. Move it aside yourself to link this skill." >&2
+      skipped=$((skipped + 1))
+      continue
     fi
 
     ln -sfn "$src" "$target"
     echo "linked $name -> $src ($DEST)"
   done
 done
+
+if [ "$skipped" -gt 0 ]; then
+  echo "$skipped skill link(s) skipped; nothing was deleted. See the messages above." >&2
+fi
