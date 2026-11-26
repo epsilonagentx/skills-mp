@@ -134,11 +134,39 @@ ask_secret() {
   printf -v "$key" '%s' "$input"
 }
 
+# _check_env_ignored runs once per wizard, before the first write_env. Inside a
+# git repo, it makes sure ENV_FILE is gitignored, offering to add it, so a later
+# `git add .` can't commit the values written to it. Outside a repo it's a no-op.
+_ENV_IGNORE_CHECKED=""
+_check_env_ignored() {
+  [[ -z "$_ENV_IGNORE_CHECKED" ]] || return 0
+  _ENV_IGNORE_CHECKED=1
+  command -v git >/dev/null 2>&1 || return 0
+  local dir name
+  dir=$(dirname "$ENV_FILE"); name=$(basename "$ENV_FILE")
+  git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 0
+  if git -C "$dir" ls-files --error-unmatch -- "$name" >/dev/null 2>&1; then
+    warn "$ENV_FILE is tracked by git, so the values written to it can be committed."
+    SKIPPED+=("untrack $ENV_FILE (git rm --cached $ENV_FILE) and gitignore it")
+    return 0
+  fi
+  git -C "$dir" check-ignore -q -- "$name" && return 0
+  warn "$ENV_FILE is not gitignored, so a later commit could publish the values written to it."
+  if confirm "Add $name to $dir/.gitignore?"; then
+    [[ -s "$dir/.gitignore" && -n "$(tail -c1 "$dir/.gitignore")" ]] && printf '\n' >> "$dir/.gitignore"
+    printf '/%s\n' "$name" >> "$dir/.gitignore"
+    printf '  %s✓ ignored%s %s in %s\n' "$GREEN" "$RESET" "$name" "$dir/.gitignore"
+  else
+    SKIPPED+=("gitignore $ENV_FILE before your next commit")
+  fi
+}
+
 # write_env KEY VALUE upserts KEY='VALUE' into ENV_FILE (replaces any existing
 # line) and sets $KEY. Idempotent. Creates ENV_FILE at mode 0600; writes through
 # a symlink and keeps an existing file's mode.
 write_env() {
   local key="$1" value="$2" tmp sq="'\\''"
+  _check_env_ignored
   [[ -e "$ENV_FILE" ]] || (umask 077 && : > "$ENV_FILE")
   tmp=$(mktemp)
   grep -vE "^${key}=" "$ENV_FILE" > "$tmp" || true

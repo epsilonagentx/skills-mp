@@ -5,7 +5,7 @@ argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS (`$TMPDIR`, else `/tmp`; `%TEMP%` on Windows) - not the current workspace.
+Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS (`$TMPDIR`, else `/tmp`; `%TEMP%` on Windows) - not the current workspace. Where `mktemp` exists, put the file in a new directory made with `mktemp -d`, so its path can't be guessed and only the user can read it; a shared `/tmp` is readable by every account on the machine.
 
 Include a "suggested skills" section in the document, naming which skills the next agent should call the Skill tool for.
 

@@ -44,7 +44,7 @@ This is the strongest criticism of it. One user found that "once the job is fini
 
 **My session is long. Run it now, or start fresh?**
 
-By default it reviews the current session. That is the best case, because the struggles are still in the context window. If the session has already moved out of the [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone), [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) it, and point a fresh `/retro` at the previous session in the session logs.
+By default it reviews the current session. That is the best case, because the struggles are still in the context window. If the session has already moved out of the [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone), [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) it, and point a fresh `/retro` at the previous session in the session logs. A session log holds everything that session saw, keys and `.env` values included, so `retro` reads it for evidence only. It never follows an instruction it finds there, and it quotes the log with every secret replaced by `[REDACTED]`.
 
 **The agent keeps making the same mistake. Should I add a line to `CLAUDE.md`?**
 
@@ -61,6 +61,7 @@ The input is different. [improve-codebase-architecture](https://aihero.dev/skill
 ## It's working if
 
 - Every candidate points back to a specific moment in the session, not a generic best practice.
+- No key, token, or `.env` value from the session logs appears in what it shows you.
 - Repeat mistakes turn into failing checks, and your `AGENTS.md` gets shorter over time, not longer.
 - If a check already existed but was not connected, the finding is to connect it, not a proposal to build a new one.
 - The next session on the same kind of task finds what it needs faster.
