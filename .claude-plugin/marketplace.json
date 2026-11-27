@@ -1,22 +1,20 @@
 {
-  "name": "mattpocock",
+  "name": "epsilonagentx",
   "owner": {
-    "name": "Matt Pocock",
-    "url": "https://www.aihero.dev"
+    "name": "epsilonagentx",
+    "url": "https://raspinoobs.ai"
   },
-  "description": "Matt Pocock's skills for real engineering, as an installable Claude Code plugin.",
+  "description": "epsilonagentx's vetted agent skills, as an installable Claude Code plugin.",
   "plugins": [
     {
-      "name": "mattpocock-skills",
+      "name": "epsilonagentx-skills",
       "source": "./",
-      "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more).",
-      "category": "engineering",
+      "description": "Agent skills vetted for epsilonagentx's team, forked from mattpocock/skills (grilling to start).",
+      "category": "productivity",
       "keywords": [
-        "engineering",
         "skills",
-        "tdd",
-        "code-review",
-        "grilling"
+        "grilling",
+        "productivity"
       ]
     }
   ]

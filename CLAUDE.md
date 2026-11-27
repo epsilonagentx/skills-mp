@@ -6,9 +6,9 @@ Skills are organized into bucket folders under `skills/`:
 - `in-progress/`: beta: public on purpose, feedback wanted, not shipped in the plugin
 - `deprecated/`: no longer used
 
-Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). Skills in `misc/`, `in-progress/`, and `deprecated/` must not appear in either.
+Every skill in `engineering/` or `productivity/` (the **promoted** buckets) must have a reference in the top-level `README.md`. This fork's Claude Code plugin (`epsilonagentx-skills`) ships only the promoted skills that have been vetted, so `.claude-plugin/plugin.json`'s `skills` array lists that subset. Add a promoted skill to it only after reviewing it and every skill it calls, and bump `version` in `package.json` and `plugin.json` together so installed users receive it. Skills in `misc/`, `in-progress/`, and `deprecated/` must not appear in the `README.md` or in `plugin.json`.
 
-Install commands are copied verbatim from [.agents/install-block.md](./.agents/install-block.md). `.claude-plugin/marketplace.json` is the repo's own marketplace. Every agent except Claude Code installs from it to get automatic updates, and Claude Code uses `claude-plugins-official`. Run `claude plugin validate . --strict` after touching either manifest. [ADR 0002](./.agents/adr/0002-ship-as-a-claude-code-plugin.md) records why.
+Install commands are copied verbatim from [.agents/install-block.md](./.agents/install-block.md). `.claude-plugin/marketplace.json` is this fork's marketplace (`epsilonagentx`), and every agent installs from it to get automatic updates, Claude Code included. The `claude-plugins-official` listing installs upstream's `mattpocock-skills` from `mattpocock/skills`, not this fork. Run `claude plugin validate . --strict` after touching either manifest. [ADR 0002](./.agents/adr/0002-ship-as-a-claude-code-plugin.md) records why upstream moved to `claude-plugins-official` and kept this file as the fallback that forks install from.
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 
