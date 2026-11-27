@@ -24,85 +24,42 @@ If you want to keep up with changes to these skills, and any new ones I create, 
 
 ## Installation (30-second setup)
 
-A plugin updates itself. [skills.sh](https://skills.sh/mattpocock/skills) copies editable files into your project, and you update them by hand. Pick one per agent, because installing both gives you every skill twice.
+This fork is the epsilonagentx team's Claude Code plugin, `epsilonagentx-skills`. It ships only the skills the team has vetted, pinned to a tested release: right now [`grill-me`](./skills/productivity/grill-me/SKILL.md) and [`grilling`](./skills/productivity/grilling/SKILL.md).
 
 ### 1. Get the skills
 
-<details>
+<details open>
 <summary><strong>Claude Code</strong></summary>
 
 ```bash
-claude plugin install mattpocock-skills@claude-plugins-official
+claude plugin marketplace add 'epsilonagentx/skills-mp#team-v1.3.2'
+claude plugin install epsilonagentx-skills@epsilonagentx
 ```
 
-Updates itself by default.
+Pinned to the tested release `team-v1.3.2`, so it doesn't update itself. To move to a newer tag, remove the marketplace, then add and install again:
+
+```bash
+claude plugin marketplace remove epsilonagentx
+claude plugin marketplace add 'epsilonagentx/skills-mp#team-vX.Y.Z'
+claude plugin install epsilonagentx-skills@epsilonagentx
+```
+
+No SSH key for GitHub? Run `export CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` first. The repo is public, so HTTPS needs no login.
 
 </details>
 
 <details>
-<summary><strong>Codex</strong></summary>
+<summary><strong>Other agents</strong></summary>
 
-```bash
-codex plugin marketplace add mattpocock/skills
-codex plugin add mattpocock-skills@mattpocock
-```
-
-Updates itself at startup.
+This fork supports Claude Code only. For other agents, use upstream [mattpocock/skills](https://github.com/mattpocock/skills), which this fork hasn't vetted.
 
 </details>
 
-<details>
-<summary><strong>GitHub Copilot</strong> (CLI and VS Code)</summary>
+Run the install once per machine. The plugin then works in every project there, in the terminal, the desktop app and VS Code.
 
-```bash
-copilot plugin marketplace add mattpocock/skills
-copilot plugin install mattpocock-skills@mattpocock
-```
+### 2. Run `/epsilonagentx-skills:grill-me`
 
-Then, once, add to `~/.copilot/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "mattpocock": { "source": { "source": "github", "repo": "mattpocock/skills" }, "autoUpdate": true }
-  }
-}
-```
-
-In VS Code, run **Chat: Install Plugin From Source** and enter `https://github.com/mattpocock/skills`. It updates daily.
-
-</details>
-
-<details>
-<summary><strong>Gemini CLI</strong> (manual updates)</summary>
-
-```bash
-gemini skills install https://github.com/mattpocock/skills.git --path skills/engineering
-gemini skills install https://github.com/mattpocock/skills.git --path skills/productivity
-```
-
-Re-run both commands to update.
-
-</details>
-
-<details>
-<summary><strong>Any other agent, or editable files</strong> (manual updates)</summary>
-
-```bash
-npx skills@latest add mattpocock/skills -a <agent>  # cursor, opencode, devin, windsurf, amp, pi; omit -a to choose
-```
-
-When the installer asks which skills to take, include `setup-matt-pocock-skills`. To update, run `npx skills@latest update`, and re-run `add` to pick up new skills.
-
-</details>
-
-### 2. Run `/setup-matt-pocock-skills`
-
-In your agent, run it once per repo. It will:
-
-- Ask you which issue tracker you want to use (GitHub, GitLab, local files, or anything else you describe)
-- Ask you what labels you apply to tickets when you triage them (`/triage` uses labels)
-- Ask you where you want to save any docs we create
+Start it in any project when you have a plan or design to sharpen. It interviews you in rounds of numbered questions, each with a recommended answer, until every branch of the plan is settled.
 
 ### 3. Bam - you're ready to go.
 
@@ -207,6 +164,8 @@ And crucially, [`/improve-codebase-architecture`](./skills/engineering/improve-c
 Software engineering fundamentals matter more than ever. These skills are my best effort at condensing these fundamentals into repeatable practices, to help you ship the best apps of your career. Enjoy.
 
 ## Reference
+
+Only [`grill-me`](./skills/productivity/grill-me/SKILL.md) and [`grilling`](./skills/productivity/grilling/SKILL.md) ship in the plugin today. The other skills below are in this repo but not in the plugin yet.
 
 These split on one axis: who can invoke them. **User-invoked** skills are reachable only when you type them (e.g. `/grill-me`); their job is to orchestrate. **Model-invoked** skills can be invoked by you _or_ reached for automatically by the agent when the task fits; they hold the reusable discipline. A user-invoked skill may invoke model-invoked skills, but never another user-invoked one.
 
